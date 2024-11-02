@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Route } from '@angular/router';
+import { ContentService } from 'src/app/services/content/content.service';
 
 @Component({
   selector: 'app-room',
@@ -8,11 +9,20 @@ import { Router, ActivatedRoute, Route } from '@angular/router';
 })
 export class RoomOverviewComponent implements OnInit {
   public roomId: String = '';
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  public cmsContent: any = {};
+
+  constructor(
+    private router: Router, 
+    private route: ActivatedRoute,
+    private contentService: ContentService
+  ) { }
 
   ngOnInit(): void {
+    this.contentService.fetchMasterData().subscribe(() => {
+      this.cmsContent = this.contentService.getCmsContent('pages/roomsOverview');
+    });
     this.roomId = this.route.snapshot.paramMap.get('id') || '';
-    console.log(this.roomId); // This will log the current 'id' parameter
+    console.log(this.roomId);
   }
 
   public enterChat(): void {
