@@ -1,1 +1,15 @@
-<p>login works!</p>
+<div class="container-fluid d-flex justify-content-center align-items-center" id="login-container">
+    <div class="login-box text-center">
+        <div class="d-flex h-100 justify-content-center align-items-center">
+            <div class="row">
+                <div class="col-12 pb-3">
+                    <div class="h1 p">{{cmsContent?.heading}}</div>
+                </div>
+                <div class="col-12 pt-3">
+                    <button (click)="signInWithGoogle()" type="button" 
+                        class="btn btn-dark">{{cmsContent?.googleBtn}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,8 +3,12 @@
     "homePage": {
       "title": "Hi, I'm Sal Casalena"
     },
+    "loginPage": {
+      "heading": "Welcome to FratChat!",
+      "googleBtn": "Sign in with Google"
+    },
     "roomsOverview": {
-      "title": "Welcome to Room {{roomId}}",
+      "title": "Welcome to Room",
       "chatButton": "Chat",
       "filesButton": "Files",
       "placeholder": "placeholder"

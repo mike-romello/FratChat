@@ -8,12 +8,16 @@ const routes: Routes = [
     { path: 'account', component: AccountsContainerComponent, children: [
         { path: 'login', component: LoginComponent },
     ] },
-    { path: 'rooms', component: RoomsContainerComponent, children: [
-        { path: ':id', component: RoomOverviewComponent },
-        { path: ':id/chat', component: RoomChatComponent },
-        { path: ':id/files', component: RoomFilesComponent }
+    { path: '', component: RoomsContainerComponent, children: [
+        { path: 'my-rooms', component: MyRoomsComponent },
+        { path: 'room', children: [
+            { path: 'overview', component: RoomOverviewComponent },
+            { path: 'chat', component: RoomChatComponent },
+            { path: 'files', component: RoomFilesComponent }
+        ] },
     ] },
 
+    
     { path: '', component: PageNotFoundComponent},
 ];
 

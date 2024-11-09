@@ -1,5 +1,5 @@
 {
-    "title": "Welcome to Room {{roomId}}",
+    "title": "Welcome to Room",
     "chatButton": "Chat",
     "filesButton": "Files",
     "placeholder": "placeholder"

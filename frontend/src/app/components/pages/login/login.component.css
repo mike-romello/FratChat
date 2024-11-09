@@ -1,0 +1,13 @@
+#login-container {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(68, 72, 87);
+}
+
+.login-box {
+    width: 40%;
+    height: 30%;
+    background-color: rgb(115, 148, 178);
+    border: 2px solid #fff;
+    border-radius: 16px;
+}
