@@ -1,0 +1,74 @@
+/* Chat Area */
+.chat-area {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Full height of the parent container */
+    overflow: hidden; /* Prevent overflow issues */
+    background-color: #2c2f33;
+  }
+  
+  /* Chat Content */
+  .chat-content {
+    flex-grow: 1; /* Take up all remaining space between the chat bar and top */
+    overflow-y: auto; /* Allow scrolling for long messages */
+    padding: 10px; /* Add padding for spacing */
+  }
+  
+  /* Chat Message */
+  .chat-message {
+    display: flex;
+    flex-direction: column;
+    background-color: #40444b;
+    padding: 10px 15px;
+    border-radius: 8px;
+    max-width: 75%; /* Limit the width of the message bubble */
+    word-wrap: break-word;
+    margin-bottom: 10px; /* Spacing between messages */
+  }
+  
+  /* Align user's own messages to the right */
+  .chat-message.my-message {
+    align-self: flex-end; /* Align to the right */
+    background-color: #5865f2; /* Discord-like blue */
+    color: white;
+  }
+  
+  /* Chat User and Timestamp */
+  .chat-user {
+    font-size: 12px;
+    color: #b9bbbe;
+  }
+  
+  .chat-timestamp {
+    margin-left: 5px;
+    font-size: 10px;
+    color: #72767d;
+  }
+  
+  /* Chat Message Content */
+  .chat-message-content {
+    margin-top: 5px;
+    font-size: 14px;
+    color: white;
+  }
+  
+  /* Chat Bar */
+  .chat-bar {
+    flex-shrink: 0; /* Prevent shrinking */
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #23272a; /* Slightly darker than the chat area */
+  }
+  
+  .chat-bar input {
+    flex-grow: 1; /* Expand input to fill available space */
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    background-color: #40444b;
+    color: white;
+  }
+  

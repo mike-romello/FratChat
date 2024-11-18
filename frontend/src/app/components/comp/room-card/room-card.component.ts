@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,11 +7,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./room-card.component.css']
 })
 export class RoomCardComponent implements OnInit {
-  public roomKey: string = "";
+  @Input() public roomKey: string = "";
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+  
   }
 
   public navigateToRoom(roomKey: String): void {
@@ -19,5 +20,6 @@ export class RoomCardComponent implements OnInit {
       // Navigate
       this.router.navigate(["room", "overview"]);
   }
+
 
 }

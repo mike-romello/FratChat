@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent, MyRoomsComponent, RoomOverviewComponent, RoomChatComponent, RoomFilesComponent, PageNotFoundComponent } from './components/pages';
+import { LoginComponent, MyRoomsComponent, RoomOverviewComponent, RoomChatLandingComponent, RoomFilesComponent, PageNotFoundComponent } from './components/pages';
 import { RoomsContainerComponent, AccountsContainerComponent } from './components/containers';
 
 const routes: Routes = [
@@ -12,7 +12,7 @@ const routes: Routes = [
         { path: 'my-rooms', component: MyRoomsComponent },
         { path: 'room', children: [
             { path: 'overview', component: RoomOverviewComponent },
-            { path: 'chat', component: RoomChatComponent },
+            { path: 'chat', component: RoomChatLandingComponent },
             { path: 'files', component: RoomFilesComponent }
         ] },
     ] },

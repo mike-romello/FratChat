@@ -26,11 +26,11 @@ export class RoomOverviewComponent implements OnInit {
   }
 
   public enterChat(): void {
-    this.router.navigate(['/rooms', this.roomId, 'chat']);
+    this.router.navigate(['room', 'chat']);
   }
 
   public enterFiles(): void {
-    this.router.navigate(['/rooms', this.roomId, 'files']);
+    this.router.navigate(['room', 'files']);
   }
 
 

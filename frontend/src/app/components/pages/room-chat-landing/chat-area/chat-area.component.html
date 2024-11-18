@@ -1,0 +1,19 @@
+<div class="chat-area">
+    <!-- Chat Content -->
+    <div class="chat-content">
+      <div *ngFor="let message of messages" class="chat-message" [ngClass]="{'my-message': message.user === 'me'}">
+        <div class="chat-user">
+          <strong>{{ message.user }}</strong> <span class="chat-timestamp">{{ message.timestamp }}</span>
+        </div>
+        <div class="chat-message-content">
+          {{ message.content }}
+        </div>
+      </div>
+    </div>
+  
+    <!-- Chat Bar -->
+    <div class="chat-bar">
+      <input type="text" placeholder="Type a message...">
+    </div>
+  </div>
+  

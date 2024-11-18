@@ -1,0 +1,20 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+.h-100 {
+  height: calc(100vh - 64px); /* Adjust height for the fixed app bar */
+}
+
+.side-pannel-container {
+  background-color: #1E3E62;
+  overflow-y: auto; /* Enable scrolling for the side panel */
+}
+
+.chat-area-container {
+  margin: 0 -30px;
+  height: calc(100vh - 64px);
+}
