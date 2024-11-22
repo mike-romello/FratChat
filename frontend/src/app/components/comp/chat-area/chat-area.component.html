@@ -1,0 +1,12 @@
+<div class="container-fluid chat-area-container">
+    <section id="messages">
+        <div *ngFor="let message of channelMessages">
+            <app-message [message]="message"></app-message>
+        </div>
+    </section>
+
+    <section id="chat-input">
+        <app-chat-input [channelID]="channelID"></app-chat-input>
+    </section>
+</div>
+

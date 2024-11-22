@@ -1,18 +1,16 @@
 <div class="container-fluid p-0 m-0">
-    <!-- Button to toggle the side panel -->
-    
-
     <div class="row no-gutters">
         <!-- Collapsible Side Panel -->
         <div *ngIf="showSideBar" id="side-panel" class="position-fixed top-0 h-100">
-            <div class="bg-light border-right h-100 p-3">
-                <h5 class="text-center">Side Panel</h5>
+            <div class="bg-dark h-100 p-3">
+                <h5 class="text-center text-info">Side Panel</h5>
                 <ul class="list-group">
                     <li class="list-group-item" *ngFor="let category of roomCategories">
                         {{category.categoryName}}
                         <ul class="list-group pt-2">
                             <li class="list-group-item" *ngFor="let channel of category.channels"
-                                (click)="changeChatArea(channel.channelID)">
+                                (click)="changeChatArea(channel.channelID, channel.channelName)"
+                                [ngStyle]="{ 'backgroundColor': channel.channelID === selectedChannelID ? 'lightblue': 'white' }">
                                 {{channel.channelName}}
                             </li>
                         </ul>
@@ -22,12 +20,11 @@
         </div>
 
         <!-- Chat Area -->
-        <div id="chat-area-container" class="col-md-12" [ngStyle]="{ 'margin-left': showSideBar ? '25%' : '0' }">
+        <div id="chat-area-container" class="col-md-12 height-grow" [ngStyle]="{ 'margin-left': showSideBar ? '25%' : '0' }">
             <section id="chat-area" class="p-3">
                 <button class="btn btn-dark m-2" type="button" (click)="toggleSidebar()">Categories</button>
-                <!-- CHAT AREA COMPONENT 
-                    @INPUTS=[channelID] 
-                -->
+                <app-chat-area [channelName]="selectedChannelName"
+                ></app-chat-area>
             </section>
         </div>
     </div>

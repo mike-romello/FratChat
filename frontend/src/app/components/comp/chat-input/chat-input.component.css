@@ -1,0 +1,44 @@
+.chat-input-container {
+    display: flex;
+    align-items: center;
+    background-color: #3c4044; /* Match lighter background for the container */
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.chat-input {
+    flex: 1;
+    background-color: #343a40; /* Match text bubble background */
+    color: #f8f9fa; /* Light text for contrast */
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    resize: none;
+    outline: none; /* Remove default focus outline */
+}
+
+.chat-input::placeholder {
+    color: #adb5bd; /* Light placeholder for a subtle effect */
+}
+
+.send-button {
+    background-color: #495057; /* Button slightly darker than input */
+    color: #f8f9fa;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-left: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.send-button:hover {
+    background-color: #6c757d; /* Lighter on hover */
+}
+
+.send-button:active {
+    background-color: #343a40; /* Match text bubble on click */
+}

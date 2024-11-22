@@ -12,7 +12,7 @@ export interface Channel {
 }
 
 export interface Message {
-    userID: any,
+    userName: any,
     content: string,
     timeStamp: string
 }

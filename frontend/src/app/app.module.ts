@@ -9,6 +9,9 @@ import {
   AccountsContainerComponent, RoomCardComponent
 } from './components';
 import { RoomChatOverviewComponent } from './components/pages/room-chat-overview/room-chat-overview.component';
+import { ChatAreaComponent } from './components/comp/chat-area/chat-area.component';
+import { MessageComponent } from './components/comp/message/message.component';
+import { ChatInputComponent } from './components/comp/chat-input/chat-input.component';
 
 
 @NgModule({
@@ -21,6 +24,9 @@ import { RoomChatOverviewComponent } from './components/pages/room-chat-overview
     AccountsContainerComponent,
     RoomCardComponent,
     RoomChatOverviewComponent,
+    ChatAreaComponent,
+    MessageComponent,
+    ChatInputComponent,
   ],
   imports: [
     BrowserModule,

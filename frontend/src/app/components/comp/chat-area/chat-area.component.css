@@ -1,0 +1,18 @@
+.chat-area-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+#messages {
+    height: 80%;
+    overflow-y: scroll;
+}
+
+.chat-input {
+    background-color: #3c4044; 
+    padding: 10px;
+    border-top: 1px solid #343a40;
+}

@@ -1,0 +1,31 @@
+.message-bubble {
+    background-color: #343a40; /* Dark background */
+    color: #f8f9fa; /* Light text */
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+    max-width: 75%; /* Prevents the bubble from stretching too wide */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    color: #adb5bd; /* Slightly lighter for a subtle header effect */
+}
+
+.user-name {
+    font-weight: bold;
+    color: #ffca28; /* Accent color for the username */
+}
+
+.timestamp {
+    font-style: italic;
+}
+
+.message-content {
+    font-size: 1rem;
+    word-wrap: break-word;
+}

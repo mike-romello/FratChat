@@ -9,7 +9,9 @@ import { Category } from './chat-interface';
 })
 export class RoomChatOverviewComponent implements OnInit {
   public roomCategories: Category[] = [];
-  public showSideBar: boolean = true; // Sidebar starts visible
+  public showSideBar: boolean = true;
+  public selectedChannelID: string = "";
+  public selectedChannelName: string = "";
 
   constructor(private myRoomsService: MyRoomsService) {}
 
@@ -28,7 +30,8 @@ export class RoomChatOverviewComponent implements OnInit {
     this.showSideBar = !this.showSideBar;
   }
 
-  public changeChatArea(channelID: string): void {
-    console.log(channelID);
+  public changeChatArea(channelID: string, channelName: string): void {
+    this.selectedChannelID = channelID;
+    this.selectedChannelName = channelName; 
   }
 }
