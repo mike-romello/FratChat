@@ -7,18 +7,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./room-card.component.css']
 })
 export class RoomCardComponent implements OnInit {
-  @Input() public roomKey: string = "";
+  @Input() public roomID: string = "";
+  @Input() public roomName: string = "";
 
   constructor(private router: Router) { }
 
   public ngOnInit(): void {
-  
+
   }
 
-  public navigateToRoom(roomKey: String): void {
-      // Update tracking service
-      // Navigate
-      this.router.navigate(["room", "overview"]);
+  public navigateToRoom(): void {
+    this.router.navigate(["my-rooms", this.roomID, "chat"]);
   }
 
 

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent, MyRoomsComponent, RoomOverviewComponent, RoomChatLandingComponent, RoomFilesComponent, PageNotFoundComponent } from './components/pages';
+import { LoginComponent, MyRoomsComponent, PageNotFoundComponent, RoomChatOverviewComponent } from './components/pages';
 import { RoomsContainerComponent, AccountsContainerComponent } from './components/containers';
 
 const routes: Routes = [
@@ -8,16 +8,8 @@ const routes: Routes = [
     { path: 'account', component: AccountsContainerComponent, children: [
         { path: 'login', component: LoginComponent },
     ] },
-    { path: '', component: RoomsContainerComponent, children: [
-        { path: 'my-rooms', component: MyRoomsComponent },
-        { path: 'room', children: [
-            { path: 'overview', component: RoomOverviewComponent },
-            { path: 'chat', component: RoomChatLandingComponent },
-            { path: 'files', component: RoomFilesComponent }
-        ] },
-    ] },
-
-    
+    { path: 'my-rooms', component: MyRoomsComponent},
+    { path: 'my-rooms/:id/chat', component: RoomChatOverviewComponent},
     { path: '', component: PageNotFoundComponent},
 ];
 

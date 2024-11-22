@@ -1,11 +1,18 @@
 <div class="container">
+    <div class="header text-center mt-5">
+        <div class="display-3">Frat Chat</div>
+        <div class="display-4">Welcome Back {{userName}} </div>
+    </div>
     <div class="row pt-5">
-        <div class="col-lg-4 col-6">
-            <app-room-card [roomKey]="'placeholder'"></app-room-card>
+        <div class="h6 py-3">Enter your rooms</div>
+        <div *ngFor="let room of myBasicRoomsData">
+            <div>
+                <app-room-card [roomID]="room.roomID" [roomName]="room.roomName"></app-room-card>
+            </div>
+
         </div>
-        <div class="col-lg-4 col-6">
-            <app-room-card></app-room-card>
-        </div>
-        <div class="col-lg-4 col-6"></div>
+    </div>
+    <div class="logout">
+        <button (click)="logout()" type="button" class="btn btn-dark">Logout</button>
     </div>
 </div>

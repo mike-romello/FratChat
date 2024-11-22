@@ -5,11 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {
-  LoginComponent, MyRoomsComponent, RoomOverviewComponent, RoomChatLandingComponent,
-  RoomFilesComponent, PageNotFoundComponent, AppBarComponent, RoomsContainerComponent,
+  LoginComponent, MyRoomsComponent, PageNotFoundComponent, RoomsContainerComponent,
   AccountsContainerComponent, RoomCardComponent
 } from './components';
-import { ChatAreaComponent } from './components/pages/room-chat-landing/chat-area/chat-area.component';
+import { RoomChatOverviewComponent } from './components/pages/room-chat-overview/room-chat-overview.component';
 
 
 @NgModule({
@@ -17,15 +16,11 @@ import { ChatAreaComponent } from './components/pages/room-chat-landing/chat-are
     AppComponent,
     LoginComponent,
     MyRoomsComponent,
-    RoomOverviewComponent,
-    RoomChatLandingComponent,
-    RoomFilesComponent,
     PageNotFoundComponent,
-    AppBarComponent,
     RoomsContainerComponent,
     AccountsContainerComponent,
     RoomCardComponent,
-    ChatAreaComponent
+    RoomChatOverviewComponent,
   ],
   imports: [
     BrowserModule,
