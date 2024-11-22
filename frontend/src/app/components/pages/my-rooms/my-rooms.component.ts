@@ -15,11 +15,11 @@ export class MyRoomsComponent implements OnInit {
 
   public ngOnInit(): void {
     this.setUserName();
-    this.getMyRoomsData();
+    this.setMyRoomsData();
 
   }
 
-  public getMyRoomsData(): any {
+  public setMyRoomsData(): void {
     this.myRoomsService.getBasicRoomInfo().subscribe(rooms => {
       this.myBasicRoomsData = rooms;
     });

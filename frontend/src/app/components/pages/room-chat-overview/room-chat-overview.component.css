@@ -1,0 +1,11 @@
+#side-panel {
+    transition: left 0.3s;
+    left: 0; 
+    width: 25%; 
+    z-index: 1050;
+}
+
+#chat-area-container {
+    transition: margin-left 0.25s;
+    /* margin-left: 25%; */
+}

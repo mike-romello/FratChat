@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MyRoomsService } from 'src/app/services/my-rooms.service';
+import { Category } from './chat-interface';
 
 @Component({
   selector: 'app-room-chat-overview',
@@ -6,10 +8,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./room-chat-overview.component.css']
 })
 export class RoomChatOverviewComponent implements OnInit {
+  public roomCategories: Category[] = [];
+  public showSideBar: boolean = true; // Sidebar starts visible
 
-  constructor() { }
+  constructor(private myRoomsService: MyRoomsService) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    this.setRoomCategories();
+
   }
 
+  public setRoomCategories(): void {
+    this.myRoomsService.getRoomCategories().subscribe((categories) => {
+      this.roomCategories = categories;
+    });
+  }
+
+  public toggleSidebar(): void {
+    this.showSideBar = !this.showSideBar;
+  }
+
+  public changeChatArea(channelID: string): void {
+    console.log(channelID);
+  }
 }
