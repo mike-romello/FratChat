@@ -12,6 +12,7 @@ export class RoomChatOverviewComponent implements OnInit {
   public showSideBar: boolean = true;
   public selectedChannelID: string = "";
   public selectedChannelName: string = "";
+  public refreshChatArea: boolean = true;
 
   constructor(private myRoomsService: MyRoomsService) {}
 
@@ -31,7 +32,11 @@ export class RoomChatOverviewComponent implements OnInit {
   }
 
   public changeChatArea(channelID: string, channelName: string): void {
-    this.selectedChannelID = channelID;
-    this.selectedChannelName = channelName; 
+    this.refreshChatArea = false;
+    setTimeout(() => {
+      this.selectedChannelID = channelID;
+      this.selectedChannelName = channelName;
+      this.refreshChatArea = true;
+    }, 0);
   }
 }

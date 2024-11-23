@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { Message } from '../../pages/room-chat-overview/chat-interface';
 import { MyMessageService } from 'src/app/services/messages.service';
 
@@ -7,16 +7,21 @@ import { MyMessageService } from 'src/app/services/messages.service';
   templateUrl: './chat-area.component.html',
   styleUrls: ['./chat-area.component.css']
 })
-export class ChatAreaComponent implements OnInit {
-  @Input() public channelID: string = ""
+export class ChatAreaComponent implements OnInit, AfterViewChecked {
+  @Input() public channelID: string = "";
   @Input() public channelName: string = "";
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   public channelMessages: Message[] = []
 
   constructor(private messageService: MyMessageService) { }
 
   public ngOnInit(): void {
+    console.log(this.channelID);
     this.setChannelMessages();
-    console.log(this.channelMessages)
+  }
+
+  public ngAfterViewChecked(): void {
+    this.scrollToBottom();
   }
 
   public setChannelMessages(): void {
@@ -25,4 +30,15 @@ export class ChatAreaComponent implements OnInit {
     });
   }
 
+  public handleMessage(message: Message): void {
+    console.log('Message received:', message);
+    this.channelMessages.push(message);
+  }
+
+  public scrollToBottom(): void {
+    if (this.messagesContainer) {
+      this.messagesContainer.nativeElement.scrollTop =
+        this.messagesContainer.nativeElement.scrollHeight;
+    }
+  }
 }

@@ -2,7 +2,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    
+    overflow-x: hidden;   
 }
 
 
@@ -11,8 +11,7 @@
     overflow-y: scroll;
 }
 
-.chat-input {
-    background-color: #3c4044; 
+#chat-input {
     padding: 10px;
-    border-top: 1px solid #343a40;
+    border-top: 2px dashed #3c4044;
 }

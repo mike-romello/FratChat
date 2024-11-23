@@ -1,12 +1,16 @@
 <div class="container-fluid chat-area-container">
-    <section id="messages">
+    <!-- Messages Section -->
+    <section id="messages" #messagesContainer class="messages-container">
         <div *ngFor="let message of channelMessages">
             <app-message [message]="message"></app-message>
         </div>
     </section>
 
+    <!-- Chat Input Section -->
     <section id="chat-input">
-        <app-chat-input [channelID]="channelID"></app-chat-input>
+        <app-chat-input 
+            [channelID]="channelID" 
+            (messageSent)="handleMessage($event)">
+        </app-chat-input>
     </section>
 </div>
-

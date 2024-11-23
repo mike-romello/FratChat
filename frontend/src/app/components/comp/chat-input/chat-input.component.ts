@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Message } from '../../pages/room-chat-overview/chat-interface';
 
 @Component({
@@ -7,20 +7,26 @@ import { Message } from '../../pages/room-chat-overview/chat-interface';
   styleUrls: ['./chat-input.component.css']
 })
 export class ChatInputComponent implements OnInit {
-  @Input() public channelID: string = "";
-  public message: Message = {
-    userName: undefined,
-    content: '',
-    timeStamp: ''
-  };
+  @Input() public channelID: string = '';
+  @Output() public messageSent: EventEmitter<Message> = new EventEmitter<Message>();
+  public messageContent: string = '';
 
-  constructor() { }
+  constructor() {}
 
-  public ngOnInit(): void {
-  }
+  public ngOnInit(): void {}
 
   public sendMessage(): void {
-    // TODO
-  }
+    if (this.messageContent.trim()) {
+      const message: Message = {
+        userName: 'TempUser', // TEMP
+        content: this.messageContent,
+        timeStamp: new Date().toISOString()
+      };
 
+      this.messageSent.emit(message);
+      this.messageContent = '';
+    } else {
+      console.log('Cannot send an empty message');
+    }
+  }
 }

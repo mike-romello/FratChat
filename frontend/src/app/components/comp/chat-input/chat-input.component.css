@@ -1,4 +1,6 @@
 .chat-input-container {
+    overflow-x: hidden;
+    max-width: 75%;
     display: flex;
     align-items: center;
     background-color: #3c4044; /* Match lighter background for the container */

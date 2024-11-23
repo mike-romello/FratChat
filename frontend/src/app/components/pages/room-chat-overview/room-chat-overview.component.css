@@ -8,6 +8,7 @@
 
 #chat-area-container {
     transition: margin-left 0.25s;
+    overflow-x: hidden;
     overflow-y: hidden;
     background-color: #4e5154;
     /* margin-left: 25%; */
@@ -15,4 +16,8 @@
 
 .height-grow {
     height: 100vh;
+}
+
+.overview-container {
+    overflow-x: hidden;
 }

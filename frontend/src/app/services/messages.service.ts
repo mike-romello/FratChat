@@ -13,8 +13,21 @@ export class MyMessageService {
         // TODO 
         // GET MESSAGES FROM CHANNEL ID
         //
+        let messages: Message[] = [];
 
-        const messages: Message[] = [
+        const channel1Messages: Message[] = [{
+            userName: 'Alice',
+            content: 'Channel 1',
+            timeStamp: '2024-11-22T10:30:00Z'
+        }];
+
+        const channel2Messages: Message[] = [{
+            userName: 'Bob',
+            content: 'Channel 2',
+            timeStamp: '2024-11-22T10:30:00Z'
+        }];
+
+        const messagesDefault: Message[] = [
             {
                 userName: 'Alice',
                 content: 'Hello, everyone!',
@@ -112,8 +125,17 @@ export class MyMessageService {
             }
         ];
 
+        switch (channelID) {
+            case "1":
+                messages = channel1Messages;
+                break;
+            case "2":
+                messages = channel2Messages;
+                break;
+            default:
+                messages = messagesDefault;
+        }
         return of(messages);
-
 
     }
 
