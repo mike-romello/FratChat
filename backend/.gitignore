@@ -1,5 +1,5 @@
 # Ignore environment configuration
-env.json
+serviceAccountKey.json
 
 # Node
 /node_modules
