@@ -1,0 +1,7 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: linear-gradient(135deg, #444857, #6c757d); /* Grey gradient */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}

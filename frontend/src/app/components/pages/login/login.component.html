@@ -1,15 +1,10 @@
-<div class="container-fluid d-flex justify-content-center align-items-center" id="login-container">
-    <div class="login-box text-center">
-        <div class="d-flex h-100 justify-content-center align-items-center">
-            <div class="row">
-                <div class="col-12 pb-3">
-                    <div class="h1 p">{{cmsContent?.heading}}</div>
-                </div>
-                <div class="col-12 pt-3">
-                    <button (click)="signInWithGoogle()" type="button" 
-                        class="btn btn-dark">{{cmsContent?.googleBtn}}</button>
-                </div>
-            </div>
+<div class="container-fluid d-flex justify-content-center align-items-center vh-100" id="login-container">
+    <div class="card shadow-lg login-card">
+        <div class="card-body text-center">
+            <h1 class="card-title mb-4 text-white">{{ cmsContent?.heading }}</h1>
+            <button (click)="signInWithGoogle()" type="button" class="btn btn-outline-light btn-lg w-75">
+                {{ cmsContent?.googleBtn }}
+            </button>
         </div>
     </div>
 </div>

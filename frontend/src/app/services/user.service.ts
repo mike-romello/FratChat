@@ -7,9 +7,12 @@ export class UserService {
 
   constructor() { }
 
-  public setUserNameSession(accountName: string): void {
-    sessionStorage.setItem("accountName", accountName);
+  public setUserSessionDetails(displayName: string, email: string, photoURL: string): void {
+    sessionStorage.setItem("accountName", displayName);
+    sessionStorage.setItem("accountEmail", email);
+    sessionStorage.setItem("accountPhotoURL", photoURL);
   }
+
 
   public getUserNameSession(): string {
     const accountName = sessionStorage.getItem("accountName");

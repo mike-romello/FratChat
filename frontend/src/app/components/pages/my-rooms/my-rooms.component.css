@@ -1,0 +1,33 @@
+#frat-chat-container {
+    width: 100%;
+    height: 100%;
+    background: transparent; /* Inherit background from body */
+    padding: 2rem;
+}
+
+.header h1, .header h2 {
+    font-family: 'Roboto', sans-serif;
+}
+
+.rooms-section h6 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.25rem;
+    color: #f8f9fa;
+    text-align: center;
+}
+
+.logout button {
+    color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+.logout button:hover {
+    background-color: #f8f9fa;
+    color: #3b4a5e;
+}
+
+.user-photo {
+    border: 2px solid #f8f9fa; /* Light border for contrast */
+    object-fit: cover; /* Ensures the image fits properly within the circle */
+  }
+  
