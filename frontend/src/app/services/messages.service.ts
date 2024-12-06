@@ -140,6 +140,11 @@ export class MyMessageService {
     }
 
 
+    // TO DO
+    public postChannelMessage(channelID: string, message: Message): void {
+        // ...
+        console.log("sending message to server....jk")
+    }
 }
 
 

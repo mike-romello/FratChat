@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Message } from '../../pages/room-chat-overview/chat-interface';
+import { MyMessageService } from 'src/app/services/messages.service';
 
 @Component({
   selector: 'app-chat-input',
@@ -11,7 +12,7 @@ export class ChatInputComponent implements OnInit {
   @Output() public messageSent: EventEmitter<Message> = new EventEmitter<Message>();
   public messageContent: string = '';
 
-  constructor() {}
+  constructor(private messageService: MyMessageService) {}
 
   public ngOnInit(): void {}
 
@@ -23,10 +24,15 @@ export class ChatInputComponent implements OnInit {
         timeStamp: new Date().toISOString()
       };
 
+      this.postMessage(message);
       this.messageSent.emit(message);
       this.messageContent = '';
     } else {
       console.log('Cannot send an empty message');
     }
+  }
+
+  public postMessage(message: Message): void {
+    this.messageService.postChannelMessage(this.channelID, message);
   }
 }

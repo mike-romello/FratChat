@@ -16,7 +16,6 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
   constructor(private messageService: MyMessageService) { }
 
   public ngOnInit(): void {
-    console.log(this.channelID);
     this.setChannelMessages();
   }
 
@@ -31,7 +30,6 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
   }
 
   public handleMessage(message: Message): void {
-    console.log('Message received:', message);
     this.channelMessages.push(message);
   }
 
