@@ -8,12 +8,12 @@ import { Router } from '@angular/router';
 })
 export class RoomCardComponent implements OnInit {
   @Input() public roomID: string = "";
-  @Input() public roomName: string = "";
+  @Input() public displayName: string = "";
 
   constructor(private router: Router) { }
 
   public ngOnInit(): void {
-
+    console.log(this.roomID)
   }
 
   public navigateToRoom(): void {

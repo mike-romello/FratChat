@@ -3,12 +3,12 @@ import { HttpService } from '../http/http.service'; // Ensure the path is correc
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { apiEnum } from '../http/api-enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private endpoint = 'accounts'; // Endpoint for user-related operations
 
   constructor(private http: HttpService, private router: Router) {}
 
@@ -27,7 +27,7 @@ export class UserService {
    * @returns Observable containing user data
    */
   public getLoginUser(email: string): Observable<any> {
-    return this.http.get(`${this.endpoint}?email=${email}`).pipe(
+    return this.http.get(`${apiEnum.ACCOUNTS}?email=${email}`).pipe(
       catchError((error) => {
         console.error('Error fetching user:', error);
         return throwError(() => error); // Propagate the error
@@ -41,7 +41,7 @@ export class UserService {
    * @returns Observable containing the server response
    */
   public postLoginUser(data: any): Observable<any> {
-    return this.http.post(this.endpoint, data).pipe(
+    return this.http.post(apiEnum.ACCOUNTS, data).pipe(
       catchError((error) => {
         console.error('Error creating user:', error);
         return throwError(() => error); // Propagate the error
@@ -53,7 +53,6 @@ export class UserService {
   * Logout
   */
   public logout(): void {
-    console.log('Logging out...');
     sessionStorage.clear();
     this.router.navigate(['/account/login']);
   }

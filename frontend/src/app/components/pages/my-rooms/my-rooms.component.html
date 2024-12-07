@@ -16,8 +16,8 @@
     <div class="rooms-section w-100">
       <h6 class="text-light mb-4">Enter your rooms</h6>
       <div class="row justify-content-center">
-        <div class="col-md-4 col-sm-6 mb-4" *ngFor="let room of myBasicRoomsData">
-          <app-room-card [roomID]="room.roomID" [roomName]="room.roomName"></app-room-card>
+        <div class="col-md-4 col-sm-6 mb-4" *ngFor="let room of myRooms">
+          <app-room-card [roomID]="room.roomID" [displayName]="room.displayName"></app-room-card>
         </div>
       </div>
     </div>

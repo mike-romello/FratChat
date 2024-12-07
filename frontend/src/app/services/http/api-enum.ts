@@ -1,4 +1,5 @@
 export enum apiEnum {
-    MY_ROOMS = "/my-rooms?userkey={userKey}",
-    ROOM_INFO = "/room/info?userkey={userKey}&roomKey={roomkey}"
+    ACCOUNTS = "accounts",
+    MY_ROOMS = "my-rooms",
+    ROOMS = "rooms"
 }

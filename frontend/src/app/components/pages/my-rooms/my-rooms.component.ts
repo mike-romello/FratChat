@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MyRoomsService } from 'src/app/services/my-rooms.service';
-import { BasicRoomInfo } from './roomInfo-interface';
+import { Room } from './roomInfo-interface';
 import { User } from 'src/app/services/user/user';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./my-rooms.component.css']
 })
 export class MyRoomsComponent implements OnInit {
-  public myBasicRoomsData: BasicRoomInfo[] = [];
+  public myRooms: Room[] = [];
   public user: User = {
     email: '',
     displayName: 'User Not Found',
@@ -42,8 +42,8 @@ export class MyRoomsComponent implements OnInit {
    * Fetch and set basic room data.
    */
   private setMyRoomsData(): void {
-    this.myRoomsService.getBasicRoomInfo().subscribe((rooms) => {
-      this.myBasicRoomsData = rooms;
+    this.myRoomsService.getMyRooms(this.user.email).subscribe((rooms) => {
+      this.myRooms = rooms;
     });
   }
 

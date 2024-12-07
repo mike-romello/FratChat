@@ -1,4 +1,6 @@
-export interface BasicRoomInfo {
-    roomName: string,
+export interface Room {
     roomID: string,
+    displayName: string,
+    channels: string[],
+    users: string[]
 }

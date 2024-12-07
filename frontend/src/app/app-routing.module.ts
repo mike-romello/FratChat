@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent, MyRoomsComponent, PageNotFoundComponent, RoomChatOverviewComponent } from './components/pages';
-import { RoomsContainerComponent, AccountsContainerComponent } from './components/containers';
+import { LoginComponent, MyRoomsComponent, RoomChatOverviewComponent } from './components/pages';
+import { AccountsContainerComponent } from './components/containers';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
