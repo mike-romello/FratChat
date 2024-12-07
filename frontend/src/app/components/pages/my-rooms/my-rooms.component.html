@@ -1,24 +1,28 @@
 <div class="container vh-100 d-flex flex-column justify-content-center align-items-center" id="frat-chat-container">
     <div class="text-center header mb-4">
-        <h1 class="display-3 text-white">Frat Chat</h1>
-        <div class="d-flex align-items-center justify-content-center mt-3">
-            <h2 class="display-4 text-light mb-3">Welcome Back, {{ userName }}</h2>
-        </div>
-        <img *ngIf="userPhotoURL" [src]="userPhotoURL" alt="User Profile Picture"
-                class="rounded-circle user-photo mr-3" width="96" height="96" />
+      <h1 class="display-3 text-white">Frat Chat</h1>
+      <div class="d-flex align-items-center justify-content-center mt-3">
+        <h2 class="display-4 text-light mb-3">Welcome Back, {{ user.displayName }}</h2>
+      </div>
+      <img
+        *ngIf="user.photoURL"
+        [src]="user.photoURL"
+        alt="User Profile Picture"
+        class="rounded-circle user-photo mr-3"
+        width="96"
+        height="96"
+      />
     </div>
     <div class="rooms-section w-100">
-        <h6 class="text-light mb-4">Enter your rooms</h6>
-        <div class="row justify-content-center">
-            <div class="col-md-4 col-sm-6 mb-4" *ngFor="let room of myBasicRoomsData">
-                <app-room-card [roomID]="room.roomID" [roomName]="room.roomName">
-                </app-room-card>
-            </div>
+      <h6 class="text-light mb-4">Enter your rooms</h6>
+      <div class="row justify-content-center">
+        <div class="col-md-4 col-sm-6 mb-4" *ngFor="let room of myBasicRoomsData">
+          <app-room-card [roomID]="room.roomID" [roomName]="room.roomName"></app-room-card>
         </div>
+      </div>
     </div>
     <div class="logout mt-5">
-        <button (click)="logout()" type="button" class="btn btn-outline-light btn-lg">
-            Logout
-        </button>
+      <button (click)="logout()" type="button" class="btn btn-outline-light btn-lg">Logout</button>
     </div>
-</div>
+  </div>
+  

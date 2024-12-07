@@ -1,0 +1,29 @@
+#not-found-container {
+    text-align: center;
+  }
+  
+  #not-found-container h1 {
+    font-size: 6rem;
+    font-weight: bold;
+  }
+  
+  #not-found-container h2 {
+    font-size: 2rem;
+  }
+  
+  #not-found-container p {
+    font-size: 1.2rem;
+    color: #d1d1d1;
+  }
+  
+  .btn-outline-light {
+    border-color: #fff;
+    color: #fff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .btn-outline-light:hover {
+    background-color: #fff;
+    color: #444;
+  }
+  

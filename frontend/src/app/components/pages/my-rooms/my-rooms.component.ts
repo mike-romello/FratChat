@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MyRoomsService } from 'src/app/services/my-rooms.service';
 import { BasicRoomInfo } from './roomInfo-interface';
+import { User } from 'src/app/services/user/user';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-my-rooms',
@@ -9,31 +11,46 @@ import { BasicRoomInfo } from './roomInfo-interface';
 })
 export class MyRoomsComponent implements OnInit {
   public myBasicRoomsData: BasicRoomInfo[] = [];
-  public userPk: string = '';
-  public userName: string = '';
-  public userPhotoURL: string = '';
+  public user: User = {
+    email: '',
+    displayName: 'User Not Found',
+    photoURL: ''
+  };
 
-  constructor(private myRoomsService: MyRoomsService) {}
+  constructor(
+    private myRoomsService: MyRoomsService,
+    private userService: UserService
+  ) {}
 
   public ngOnInit(): void {
-    this.userPk = sessionStorage.getItem("accountEmail") || "";
-    this.userName = sessionStorage.getItem("accountName") || "User Not Found";
-    this.userPhotoURL = sessionStorage.getItem("accountPhotoURL") || "User Not Found";
-
+    this.setUserFromSession();
     this.setMyRoomsData();
   }
 
-  public setMyRoomsData(): void {
-    this.myRoomsService.getBasicRoomInfo().subscribe(rooms => {
+  /**
+   * Set user data from session storage.
+   */
+  private setUserFromSession(): void {
+    this.user = {
+      email: sessionStorage.getItem('accountEmail') || '',
+      displayName: sessionStorage.getItem('accountName') || 'User Not Found',
+      photoURL: sessionStorage.getItem('accountPhotoURL') || ''
+    };
+  }
+
+  /**
+   * Fetch and set basic room data.
+   */
+  private setMyRoomsData(): void {
+    this.myRoomsService.getBasicRoomInfo().subscribe((rooms) => {
       this.myBasicRoomsData = rooms;
     });
   }
 
-  public logout(): void{
-    // TODO
-
-    // Temp
-    console.log("logging out..")
+  /**
+   * Log out the user.
+   */
+  public logout(): void {
+    this.userService.logout();
   }
-
 }

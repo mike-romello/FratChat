@@ -7,7 +7,7 @@ import { error } from 'node:console';
   providedIn: 'root'
 })
 export class HttpService {
-  private baseUrl: string = "..."; // PLACE HOLDER
+  private baseUrl: string = "http://localhost:3000";
 
   constructor(private http: HttpClient) { }
 
