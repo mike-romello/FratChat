@@ -141,6 +141,83 @@ app.get("/rooms", async (req, res) => {
   }
 });
 
+// GET: Fetch categories for a specific room
+// GET: Fetch categories for a specific room
+app.get("/categories", async (req, res) => {
+  const roomPk = req.query.roomKey;
+
+  if (!roomPk) {
+    return res.status(400).json({ success: false, error: "Room primary key (roomKey) is required." });
+  }
+
+  try {
+    // Look up the room in Firestore by pk
+    const roomDoc = await db.collection("rooms").doc(roomPk).get();
+
+    if (!roomDoc.exists) {
+      return res.status(404).json({ success: false, error: "Room not found." });
+    }
+
+    // Get the list of category pks from the room data
+    const roomData = roomDoc.data();
+    const categoryPks = roomData.categories || [];
+
+    if (categoryPks.length === 0) {
+      return res.status(200).json({ success: true, categories: [] }); // No categories in the room
+    }
+
+    // Fetch category data for each category PK
+    const categoryPromises = categoryPks.map(async (categoryPk) => {
+      const categoryDoc = await db.collection("categories").doc(categoryPk).get();
+      if (categoryDoc.exists) {
+        const categoryData = categoryDoc.data();
+        const channels = categoryData.channels || []; // List of channel IDs
+
+        // Fetch channel display names for each channel ID
+        const channelDetails = await Promise.all(
+          channels.map(async (channelId) => {
+            const channelDoc = await db
+              .collection("categories")
+              .doc(categoryPk)
+              .collection("channels")
+              .doc(channelId)
+              .get();
+
+            if (channelDoc.exists) {
+              const channelData = channelDoc.data();
+              return {
+                channelId,
+                displayName: channelData.channelName || "Unnamed Channel",
+              };
+            }
+            return { channelId, displayName: "Unknown Channel" }; // Default if channel is missing
+          })
+        );
+
+        return {
+          pk: categoryPk,
+          displayName: categoryData.categoryName || "Unnamed Category",
+          channels: channelDetails, // Includes both channelId and displayName
+        };
+      } else {
+        console.warn(`Category with pk ${categoryPk} not found.`);
+        return null;
+      }
+    });
+
+    // Resolve all category promises
+    const categories = (await Promise.all(categoryPromises)).filter((category) => category !== null);
+
+    res.status(200).json({
+      success: true,
+      categories,
+    });
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 
 
 

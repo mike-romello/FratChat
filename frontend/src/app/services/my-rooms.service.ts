@@ -63,31 +63,39 @@ export class MyRoomsService {
     );
   }
 
-  // LEAVE ALL BELOW ALONE FOR NOW
-  public getRoomCategories(): Observable<Category[]> {
-    // To Do
-    // Call http method
-    // parse it to type category
-    // return that as observable
-
-    // Temp Data
-    const channels: Channel[] = [
-      { channelID: '1', channelName: 'Channel 1' },
-      { channelID: '2', channelName: 'Channel 2' },
-      { channelID: '3', channelName: 'Channel 3' },
-      { channelID: '4', channelName: 'Channel 4' },
-      { channelID: '5', channelName: 'Channel 5' },
-      { channelID: '6', channelName: 'Channel 6' },
-      { channelID: '7', channelName: 'Channel 7' },
-      { channelID: '8', channelName: 'Channel 8' },
-      { channelID: '9', channelName: 'Channel 9' },
-    ];
-
-    const testCategories: Category[] = [
-      { categoryID: '1', categoryName: 'Category 1', channels: [channels[0], channels[1], channels[2]] },
-      { categoryID: '2', categoryName: 'Category 2', channels: [channels[3], channels[4], channels[5]] },
-      { categoryID: '3', categoryName: 'Category 3', channels: [channels[6], channels[7], channels[8]] },
-    ];
-    return of(testCategories);
+  /**
+ * Fetch categories for a specific room by its roomID.
+ * @param roomID - Primary key of the room
+ * @returns Observable of Category[]
+ */
+public getRoomCategories(roomID: string): Observable<Category[]> {
+  if (!roomID) {
+    console.error('Room ID is required to fetch categories.');
+    return of([]); // Return an empty array if no roomID is provided
   }
+
+  return this.http
+    .get<{ success: boolean; categories: any[] }>(`${this.baseUrl}/categories?roomKey=${roomID}`)
+    .pipe(
+      map((response) => {
+        if (response.success) {
+          // Map the API response to match the Category interface
+          return response.categories.map((category) => ({
+            categoryID: category.pk, // Map 'pk' to 'categoryID'
+            displayName: category.displayName,
+            channels: category.channels.map((channel: any) => ({
+              channelID: channel.channelId, // Map 'channelId' to 'channelID'
+              channelName: channel.displayName, // Map 'displayName' to 'channelName'
+              messages: [] // Initialize messages as an empty array
+            }))
+          }));
+        }
+        return []; // Return an empty array if success is false
+      }),
+      catchError((error) => {
+        console.error('Error fetching room categories:', error);
+        return of([]); // Handle errors gracefully by returning an empty array
+      })
+    );
+}
 }

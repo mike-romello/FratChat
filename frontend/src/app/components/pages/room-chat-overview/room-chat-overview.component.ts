@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MyRoomsService } from 'src/app/services/my-rooms.service';
-import { Category } from './chat-interface';
+import { Category, Channel } from './chat-interface';
+import { ActivatedRoute } from '@angular/router';
+import { computeMsgId } from '@angular/compiler';
 
 @Component({
   selector: 'app-room-chat-overview',
@@ -8,22 +10,28 @@ import { Category } from './chat-interface';
   styleUrls: ['./room-chat-overview.component.css']
 })
 export class RoomChatOverviewComponent implements OnInit {
+  public roomID: string = '';
   public roomCategories: Category[] = [];
+  public roomChannels: Channel[] = []
   public showSideBar: boolean = true;
   public selectedChannelID: string = "";
   public selectedChannelName: string = "";
   public refreshChatArea: boolean = true;
 
-  constructor(private myRoomsService: MyRoomsService) {}
+  constructor(
+    private myRoomsService: MyRoomsService,
+    private route: ActivatedRoute
+  ) {}
 
   public ngOnInit(): void {
-    this.setRoomCategories();
-
+    this.extractIdFromRoute();
+    this.setRoomCategories(this.roomID);
   }
 
-  public setRoomCategories(): void {
-    this.myRoomsService.getRoomCategories().subscribe((categories) => {
+  public setRoomCategories(roomID: string): void {
+    this.myRoomsService.getRoomCategories(roomID).subscribe((categories) => {
       this.roomCategories = categories;
+      console.log(this.roomCategories)
     });
   }
 
@@ -39,4 +47,11 @@ export class RoomChatOverviewComponent implements OnInit {
       this.refreshChatArea = true;
     }, 0);
   }
+
+  private extractIdFromRoute(): void {
+    this.route.paramMap.subscribe((params) => {
+      this.roomID = params.get('id') || '';
+    });
+  }
+
 }

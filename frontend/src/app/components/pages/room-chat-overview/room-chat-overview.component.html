@@ -6,7 +6,7 @@
                 <h5 class="text-center text-info">Channels</h5>
                 <ul class="list-group">
                     <li class="list-group-item" *ngFor="let category of roomCategories">
-                        {{ category.categoryName }}
+                        {{ category.displayName }}
                         <ul class="list-group pt-2">
                             <li class="list-group-item" 
                                 *ngFor="let channel of category.channels"

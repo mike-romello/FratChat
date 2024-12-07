@@ -88,22 +88,61 @@ async function modifyUserToAddRoom(email, roomId) {
 
 // Sample Data Population
 async function populateSampleData() {
-    const me = "salcasalena@gmail.com";
-    const roomId = "room1";
-    const roomDisplayName = "Team Room";
-    const categoryId = "category1";
-    const channelId = "channel1";
-    const messageId = "message1";
+    const roomId = "teamRoom1";
+    const roomDisplayName = "Phi Psi";
+    const categoryId1 = "generalCategory";
+    const categoryId2 = "announcementsCategory";
+    const categoryId3 = "randomCategory";
     const userEmail = "user@example.com";
+    const me = "salcasalena@gmail.com";
 
+    // Add realistic channels
+    const channelId1 = "generalChat";
+    const channelId2 = "teamUpdates";
+    const channelId3 = "importantInfo";
+    const channelId4 = "randomTalk";
+    const channelId5 = "funMemes";
+
+    // Add sample message
+    const messageId1 = "msg1";
+
+    // Create User
     await createUser(userEmail, "John Doe", "https://example.com/photo.jpg", [roomId]);
-    await createRoom(roomId, roomDisplayName, [userEmail, me], [categoryId]);
-    await createCategory(categoryId, "General", [channelId]);
-    await createChannel(categoryId, channelId, "General Chat", [messageId]);
-    await createMessage(categoryId, channelId, messageId, userEmail, admin.firestore.FieldValue.serverTimestamp(), "Hello World!");
+
+    // Create Room
+    await createRoom(roomId, roomDisplayName, [userEmail, me], [categoryId1, categoryId2, categoryId3]);
+
+    // Create Categories
+    await createCategory(categoryId1, "General", [channelId1, channelId2]);
+    await createCategory(categoryId2, "Announcements", [channelId3]);
+    await createCategory(categoryId3, "Random", [channelId4, channelId5]);
+
+    // Create Channels
+    await createChannel(categoryId1, channelId1, "General Chat", [messageId1]);
+    await createChannel(categoryId1, channelId2, "Team Updates", []);
+    await createChannel(categoryId2, channelId3, "Important Info", []);
+    await createChannel(categoryId3, channelId4, "Random Talk", []);
+    await createChannel(categoryId3, channelId5, "Fun Memes", []);
+
+    // Create Message
+    await createMessage(
+        categoryId1,
+        channelId1,
+        messageId1,
+        userEmail,
+        admin.firestore.FieldValue.serverTimestamp(),
+        "Welcome to the General Chat!"
+    );
+
+    // Add Permission
     await createPermission("permission1", "Admin Access");
+
+    // Modify existing user to add the room
     await modifyUserToAddRoom(me, roomId);
+
+    console.log("Sample data populated successfully.");
 }
+
 
 // Run the script
 populateSampleData().catch(console.error);

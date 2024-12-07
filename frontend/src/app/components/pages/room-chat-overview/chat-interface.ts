@@ -1,14 +1,13 @@
 export interface Category {
-    categoryName: string,
     categoryID: string
-    channels: Channel[]
+    displayName: string,
+    channels: any[],
 }
 
 export interface Channel {
     channelName: string,
     channelID: string,
-    canEdit?: any[] // TODO
-    canRead?: any[] // TODO
+    messages: string[]
 }
 
 export interface Message {
