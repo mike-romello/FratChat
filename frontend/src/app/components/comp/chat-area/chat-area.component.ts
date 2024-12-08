@@ -32,8 +32,6 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
   
         return timeA - timeB; // Sort in ascending order
       });
-    console.log(this.channelMessages)
-
     });
   }
   

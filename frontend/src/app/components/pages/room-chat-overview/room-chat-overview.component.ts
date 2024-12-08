@@ -31,6 +31,7 @@ export class RoomChatOverviewComponent implements OnInit {
   public setRoomCategories(roomID: string): void {
     this.myRoomsService.getRoomCategories(roomID).subscribe((categories) => {
       this.roomCategories = categories;
+      this.setDefaultChannel();
     });
   }
 
@@ -51,6 +52,17 @@ export class RoomChatOverviewComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.roomID = params.get('id') || '';
     });
+  }
+
+  private setDefaultChannel(): void {
+    for (const category of this.roomCategories) {
+      if (category.channels.length > 0) {
+        const firstChannel = category.channels[0];
+        this.selectedChannelID = firstChannel.channelID;
+        this.selectedChannelName = firstChannel.channelName;
+        return;
+      }
+    }
   }
 
 }

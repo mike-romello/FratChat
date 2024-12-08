@@ -1,28 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of, forkJoin } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { Room } from '../components/pages/my-rooms/roomInfo-interface';
 import { Category } from '../components/pages/room-chat-overview/chat-interface';
 import { apiEnum } from './http/api-enum';
+import { HttpService } from './http/http.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MyRoomsService {
-  private readonly baseUrl = 'http://localhost:3000'; // Adjust to your backend URL
-
-  constructor(private http: HttpClient) {}
+  constructor(private httpService: HttpService) {}
 
   /**
    * Fetch the rooms associated with the current user.
+   * @param userKey - The primary key of the user
    * @returns Observable of Room[]
    */
   public getMyRooms(userKey: string): Observable<Room[]> {
-    return this.http
-      .get<{ success: boolean; rooms: string[] }>(`${this.baseUrl}/${apiEnum.MY_ROOMS}${userKey}`)
+    return this.httpService
+      .get(`${apiEnum.MY_ROOMS}${userKey}`)
       .pipe(
-        switchMap((response) => {
+        switchMap((response: { success: boolean; rooms: string[] }) => {
           if (response.success && response.rooms.length > 0) {
             // Fetch details for each room
             const roomDetailsRequests = response.rooms.map((roomID) =>
@@ -30,7 +29,7 @@ export class MyRoomsService {
             );
             return forkJoin(roomDetailsRequests); // Combine all requests
           }
-          return of([]); // Return empty array if no rooms
+          return of([]); // Return an empty array if no rooms
         }),
         catchError((error) => {
           console.error('Error fetching rooms:', error);
@@ -45,8 +44,8 @@ export class MyRoomsService {
    * @returns Observable of Room
    */
   private getRoomDetails(roomID: string): Observable<Room> {
-    return this.http.get<{ success: boolean; room: Room }>(`${this.baseUrl}/${apiEnum.ROOMS}${roomID}`).pipe(
-      map((response) => {
+    return this.httpService.get(`${apiEnum.ROOMS}${roomID}`).pipe(
+      map((response: { success: boolean; room: Room }) => {
         if (response.success) {
           return response.room;
         }
@@ -65,38 +64,38 @@ export class MyRoomsService {
   }
 
   /**
- * Fetch categories for a specific room by its roomID.
- * @param roomID - Primary key of the room
- * @returns Observable of Category[]
- */
-public getRoomCategories(roomID: string): Observable<Category[]> {
-  if (!roomID) {
-    console.error('Room ID is required to fetch categories.');
-    return of([]); // Return an empty array if no roomID is provided
-  }
+   * Fetch categories for a specific room by its roomID.
+   * @param roomID - Primary key of the room
+   * @returns Observable of Category[]
+   */
+  public getRoomCategories(roomID: string): Observable<Category[]> {
+    if (!roomID) {
+      console.error('Room ID is required to fetch categories.');
+      return of([]); // Return an empty array if no roomID is provided
+    }
 
-  return this.http
-    .get<{ success: boolean; categories: any[] }>(`${this.baseUrl}/${apiEnum.CATEGORIES}${roomID}`)
-    .pipe(
-      map((response) => {
-        if (response.success) {
-          // Map the API response to match the Category interface
-          return response.categories.map((category) => ({
-            categoryID: category.pk, // Map 'pk' to 'categoryID'
-            displayName: category.displayName,
-            channels: category.channels.map((channel: any) => ({
-              channelID: channel.channelId, // Map 'channelId' to 'channelID'
-              channelName: channel.displayName, // Map 'displayName' to 'channelName'
-              messages: [] // Initialize messages as an empty array
-            }))
-          }));
-        }
-        return []; // Return an empty array if success is false
-      }),
-      catchError((error) => {
-        console.error('Error fetching room categories:', error);
-        return of([]); // Handle errors gracefully by returning an empty array
-      })
-    );
-}
+    return this.httpService
+      .get(`${apiEnum.CATEGORIES}${roomID}`)
+      .pipe(
+        map((response: { success: boolean; categories: any[] }) => {
+          if (response.success) {
+            // Map the API response to match the Category interface
+            return response.categories.map((category) => ({
+              categoryID: category.pk, // Map 'pk' to 'categoryID'
+              displayName: category.displayName,
+              channels: category.channels.map((channel: any) => ({
+                channelID: channel.channelId, // Map 'channelId' to 'channelID'
+                channelName: channel.displayName, // Map 'displayName' to 'channelName'
+                messages: [] // Initialize messages as an empty array
+              })),
+            }));
+          }
+          return []; // Return an empty array if success is false
+        }),
+        catchError((error) => {
+          console.error('Error fetching room categories:', error);
+          return of([]); // Handle errors gracefully by returning an empty array
+        })
+      );
+  }
 }
