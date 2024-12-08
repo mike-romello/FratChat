@@ -11,8 +11,10 @@ export interface Channel {
 }
 
 export interface Message {
-    userName: any,
-    content: string,
-    timeStamp: string
-}
+    id: string;
+    userPk: string;
+    content: string;
+    timestamp: Date | null;
+  }
+  
 

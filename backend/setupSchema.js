@@ -33,6 +33,7 @@ async function createCategory(categoryId, categoryName, channels) {
 async function createChannel(categoryId, channelId, channelName, messages) {
     const categoryRef = db.collection('categories').doc(categoryId);
     await categoryRef.collection('channels').doc(channelId).set({
+        channelID: channelId, // Add channelID for easier querying
         channelName,
         messages, // Array of message document references
     });
@@ -58,24 +59,22 @@ async function createPermission(permissionId, permissionName) {
     console.log(`Permission ${permissionId} created.`);
 }
 
+// Modify an existing user to add a room
 async function modifyUserToAddRoom(email, roomId) {
     try {
-        // Reference to the user document
         const userRef = db.collection('users').doc(email);
 
-        // Get the current user data
         const userDoc = await userRef.get();
         if (!userDoc.exists) {
             console.log(`User with email ${email} does not exist.`);
             return;
         }
 
-        // Get the current list of rooms and add the new room if not already present
         const userData = userDoc.data();
         const myRooms = userData.myRooms || [];
 
         if (!myRooms.includes(roomId)) {
-            myRooms.push(roomId); // Add the room
+            myRooms.push(roomId);
             await userRef.update({ myRooms });
             console.log(`Room ${roomId} added to user ${email}.`);
         } else {
@@ -96,35 +95,27 @@ async function populateSampleData() {
     const userEmail = "user@example.com";
     const me = "salcasalena@gmail.com";
 
-    // Add realistic channels
     const channelId1 = "generalChat";
     const channelId2 = "teamUpdates";
     const channelId3 = "importantInfo";
     const channelId4 = "randomTalk";
     const channelId5 = "funMemes";
 
-    // Add sample message
     const messageId1 = "msg1";
 
-    // Create User
     await createUser(userEmail, "John Doe", "https://example.com/photo.jpg", [roomId]);
-
-    // Create Room
     await createRoom(roomId, roomDisplayName, [userEmail, me], [categoryId1, categoryId2, categoryId3]);
 
-    // Create Categories
     await createCategory(categoryId1, "General", [channelId1, channelId2]);
     await createCategory(categoryId2, "Announcements", [channelId3]);
     await createCategory(categoryId3, "Random", [channelId4, channelId5]);
 
-    // Create Channels
     await createChannel(categoryId1, channelId1, "General Chat", [messageId1]);
     await createChannel(categoryId1, channelId2, "Team Updates", []);
     await createChannel(categoryId2, channelId3, "Important Info", []);
     await createChannel(categoryId3, channelId4, "Random Talk", []);
     await createChannel(categoryId3, channelId5, "Fun Memes", []);
 
-    // Create Message
     await createMessage(
         categoryId1,
         channelId1,
@@ -134,15 +125,11 @@ async function populateSampleData() {
         "Welcome to the General Chat!"
     );
 
-    // Add Permission
     await createPermission("permission1", "Admin Access");
-
-    // Modify existing user to add the room
     await modifyUserToAddRoom(me, roomId);
 
     console.log("Sample data populated successfully.");
 }
-
 
 // Run the script
 populateSampleData().catch(console.error);

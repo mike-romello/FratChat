@@ -1,11 +1,11 @@
 <div class="container mt-3">
-    <div class="message-bubble">
-        <div class="message-header">
-            <span class="user-name">{{message.userName}}</span>
-            <span class="timestamp">{{message.timeStamp}}</span>
+    <div class="message-bubble p-3 rounded">
+        <div class="message-header d-flex justify-content-between">
+            <span class="user-name font-weight-bold">{{ message.userPk }}</span>
+            <span class="timestamp text-muted">{{ message.timestamp | date: 'short' }}</span>
         </div>
-        <div class="message-content">
-            {{message.content}}
+        <div class="message-content mt-2">
+            {{ message.content }}
         </div>
     </div>
 </div>

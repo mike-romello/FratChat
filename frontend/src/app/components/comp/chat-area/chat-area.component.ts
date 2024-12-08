@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { Message } from '../../pages/room-chat-overview/chat-interface';
-import { MyMessageService } from 'src/app/services/messages.service';
+import { MessageService } from 'src/app/services/messages.service';
 
 @Component({
   selector: 'app-chat-area',
@@ -13,7 +13,7 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   public channelMessages: Message[] = []
 
-  constructor(private messageService: MyMessageService) { }
+  constructor(private messageService: MessageService) { }
 
   public ngOnInit(): void {
     this.setChannelMessages();
@@ -25,9 +25,18 @@ export class ChatAreaComponent implements OnInit, AfterViewChecked {
 
   public setChannelMessages(): void {
     this.messageService.getChannelMessages(this.channelID).subscribe(messages => {
-      this.channelMessages = messages;
+      this.channelMessages = messages.sort((a, b) => {
+        // Handle potential null timestamps for robust sorting
+        const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+        const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+  
+        return timeA - timeB; // Sort in ascending order
+      });
+    console.log(this.channelMessages)
+
     });
   }
+  
 
   public handleMessage(message: Message): void {
     this.channelMessages.push(message);

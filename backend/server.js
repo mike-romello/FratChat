@@ -218,7 +218,103 @@ app.get("/categories", async (req, res) => {
   }
 });
 
+// GET: Fetch all messages for a specific channel
+app.get('/messages', async (req, res) => {
+  const channelKey = req.query.channelKey;
 
+  if (!channelKey) {
+    return res.status(400).json({ success: false, error: 'Channel key (channelKey) is required.' });
+  }
+
+  try {
+    // Query the specified channel
+    const channelQuery = await db.collectionGroup('channels')
+      .where('channelID', '==', channelKey)
+      .get();
+
+    if (channelQuery.empty) {
+      return res.status(404).json({ success: false, error: 'Channel not found.' });
+    }
+
+    const channelRef = channelQuery.docs[0].ref;
+
+    // Get all messages for the specified channel
+    const messagesSnapshot = await channelRef.collection('messages').get();
+    const messages = messagesSnapshot.docs.map((doc) => {
+      const messageData = doc.data();
+
+      // Debugging log to identify the issue
+      console.log('Message data:', messageData);
+
+      return {
+        id: doc.id,
+        userPk: messageData.userPk || null, // Default to null if undefined
+        content: messageData.content || null, // Default to null if undefined
+        timestamp: messageData.timestamp?.toDate?.() || null, // Safely handle Firestore Timestamp
+      };
+    });
+
+    res.status(200).json({
+      success: true,
+      messages,
+    });
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+
+// POST: Add a new message to a channel
+app.post('/messages', async (req, res) => {
+  const channelKey = req.query.channelKey; // Query parameter for the channel key
+  const { userPk, content } = req.body; // Extract message fields from the body
+
+  if (!channelKey) {
+    return res.status(400).json({ success: false, error: 'Channel key (channelKey) is required.' });
+  }
+
+  if (!userPk || !content) {
+    return res.status(400).json({ success: false, error: 'User key (userPk) and content are required in the request body.' });
+  }
+
+  try {
+    // Verify the channel exists
+    const channelQuery = await db.collectionGroup('channels')
+      .where('channelID', '==', channelKey)
+      .get();
+
+    if (channelQuery.empty) {
+      return res.status(404).json({ success: false, error: 'Channel not found.' });
+    }
+
+    // Generate a unique message ID
+    const messageID = db.collection('dummy').doc().id; // Firestore auto-generated ID
+
+    // Reference to the first matched channel document
+    const channelRef = channelQuery.docs[0].ref;
+
+    // Prepare the new message
+    const newMessage = {
+      userPk,
+      content,
+      timestamp: admin.firestore.FieldValue.serverTimestamp(), // Always use Firestore server timestamp
+    };
+
+    // Save the message
+    await channelRef.collection('messages').doc(messageID).set(newMessage);
+
+    // Respond with success
+    res.status(201).json({
+      success: true,
+      message: 'Message created successfully.',
+      messageID,
+    });
+  } catch (error) {
+    console.error('Error adding message:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 
 // Start the server

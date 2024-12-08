@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, forkJoin } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { Room } from '../components/pages/my-rooms/roomInfo-interface';
-import { Category, Channel } from '../components/pages/room-chat-overview/chat-interface';
+import { Category } from '../components/pages/room-chat-overview/chat-interface';
+import { apiEnum } from './http/api-enum';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class MyRoomsService {
    */
   public getMyRooms(userKey: string): Observable<Room[]> {
     return this.http
-      .get<{ success: boolean; rooms: string[] }>(`${this.baseUrl}/my-rooms?userkey=${userKey}`)
+      .get<{ success: boolean; rooms: string[] }>(`${this.baseUrl}/${apiEnum.MY_ROOMS}${userKey}`)
       .pipe(
         switchMap((response) => {
           if (response.success && response.rooms.length > 0) {
@@ -44,7 +45,7 @@ export class MyRoomsService {
    * @returns Observable of Room
    */
   private getRoomDetails(roomID: string): Observable<Room> {
-    return this.http.get<{ success: boolean; room: Room }>(`${this.baseUrl}/rooms?pk=${roomID}`).pipe(
+    return this.http.get<{ success: boolean; room: Room }>(`${this.baseUrl}/${apiEnum.ROOMS}${roomID}`).pipe(
       map((response) => {
         if (response.success) {
           return response.room;
@@ -75,7 +76,7 @@ public getRoomCategories(roomID: string): Observable<Category[]> {
   }
 
   return this.http
-    .get<{ success: boolean; categories: any[] }>(`${this.baseUrl}/categories?roomKey=${roomID}`)
+    .get<{ success: boolean; categories: any[] }>(`${this.baseUrl}/${apiEnum.CATEGORIES}${roomID}`)
     .pipe(
       map((response) => {
         if (response.success) {

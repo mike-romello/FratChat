@@ -8,8 +8,11 @@ import { Message } from '../../pages/room-chat-overview/chat-interface';
 })
 export class MessageComponent implements OnInit {
   @Input() message: Message = {
-    userName: "", content: "", timeStamp: ""
-  }
+    userPk: "",
+    content: "",
+    timestamp: new Date(),
+    id: ""
+  };
 
   constructor() { }
 

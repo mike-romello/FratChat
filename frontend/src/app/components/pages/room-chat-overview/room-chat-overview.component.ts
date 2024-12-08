@@ -31,7 +31,6 @@ export class RoomChatOverviewComponent implements OnInit {
   public setRoomCategories(roomID: string): void {
     this.myRoomsService.getRoomCategories(roomID).subscribe((categories) => {
       this.roomCategories = categories;
-      console.log(this.roomCategories)
     });
   }
 
