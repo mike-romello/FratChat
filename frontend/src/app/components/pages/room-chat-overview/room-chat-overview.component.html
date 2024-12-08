@@ -5,13 +5,16 @@
             <div class="bg-dark h-100 p-3">
                 <h5 class="text-center text-info">Channels</h5>
                 <ul class="list-group">
-                    <li class="list-group-item" *ngFor="let category of roomCategories">
+                    <li class="category-header list-group-item" *ngFor="let category of roomCategories">
                         {{ category.displayName }}
                         <ul class="list-group pt-2">
-                            <li class="list-group-item" 
+                            <li class="list-group-item-inner" 
                                 *ngFor="let channel of category.channels"
                                 (click)="changeChatArea(channel.channelID, channel.channelName)"
-                                [ngStyle]="{ 'backgroundColor': channel.channelID === selectedChannelID ? 'lightblue' : 'white' }">
+                                [ngStyle]="{ 
+                                    'color': channel.channelID === selectedChannelID ? '#ffc107' : 'inherit', 
+                                    'fontWeight': channel.channelID === selectedChannelID ? 'bold' : 'normal' 
+                                }">
                                 {{ channel.channelName }}
                             </li>
                         </ul>
