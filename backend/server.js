@@ -142,7 +142,6 @@ app.get("/rooms", async (req, res) => {
 });
 
 // GET: Fetch categories for a specific room
-// GET: Fetch categories for a specific room
 app.get("/categories", async (req, res) => {
   const roomPk = req.query.roomKey;
 
@@ -158,12 +157,13 @@ app.get("/categories", async (req, res) => {
       return res.status(404).json({ success: false, error: "Room not found." });
     }
 
-    // Get the list of category pks from the room data
+    // Get the room data
     const roomData = roomDoc.data();
     const categoryPks = roomData.categories || [];
+    const roomUsers = roomData.users || []; // Fetch users from room data
 
     if (categoryPks.length === 0) {
-      return res.status(200).json({ success: true, categories: [] }); // No categories in the room
+      return res.status(200).json({ success: true, categories: [], users: roomUsers }); // Return empty categories and users
     }
 
     // Fetch category data for each category PK
@@ -211,12 +211,14 @@ app.get("/categories", async (req, res) => {
     res.status(200).json({
       success: true,
       categories,
+      users: roomUsers, // Add the users from the room data
     });
   } catch (error) {
     console.error("Error fetching categories:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
 
 // GET: Fetch all messages for a specific channel
 app.get('/messages', async (req, res) => {
@@ -232,25 +234,55 @@ app.get('/messages', async (req, res) => {
       .where('channelID', '==', channelKey)
       .get();
 
-    if (channelQuery.empty) {
-      return res.status(404).json({ success: false, error: 'Channel not found.' });
-    }
+    let channelRef;
 
-    const channelRef = channelQuery.docs[0].ref;
+    if (channelQuery.empty) {
+      console.log(`Channel with key '${channelKey}' not found. Creating a new channel...`);
+
+      // Create a new default category for demonstration purposes
+      const defaultCategoryId = 'defaultCategory';
+
+      // Check if the default category exists
+      const categoryDoc = await db.collection('categories').doc(defaultCategoryId).get();
+
+      if (!categoryDoc.exists) {
+        // Create the default category if it doesn't exist
+        await db.collection('categories').doc(defaultCategoryId).set({
+          categoryName: 'Default Category',
+          channels: [channelKey],
+        });
+        console.log(`Default category '${defaultCategoryId}' created.`);
+      } else {
+        // Update the existing category to include the new channel
+        const categoryData = categoryDoc.data();
+        const updatedChannels = [...(categoryData.channels || []), channelKey];
+        await db.collection('categories').doc(defaultCategoryId).update({ channels: updatedChannels });
+        console.log(`Channel '${channelKey}' added to existing category '${defaultCategoryId}'.`);
+      }
+
+      // Create the new channel under the default category
+      channelRef = db.collection('categories').doc(defaultCategoryId).collection('channels').doc(channelKey);
+      await channelRef.set({
+        channelID: channelKey,
+        channelName: channelKey, // Use the channel key as the name for now
+        messages: [],
+      });
+      console.log(`Channel '${channelKey}' created under category '${defaultCategoryId}'.`);
+    } else {
+      // Use the existing channel reference
+      channelRef = channelQuery.docs[0].ref;
+    }
 
     // Get all messages for the specified channel
     const messagesSnapshot = await channelRef.collection('messages').get();
     const messages = messagesSnapshot.docs.map((doc) => {
       const messageData = doc.data();
 
-      // Debugging log to identify the issue
-      console.log('Message data:', messageData);
-
       return {
         id: doc.id,
-        userPk: messageData.userPk || null, // Default to null if undefined
-        content: messageData.content || null, // Default to null if undefined
-        timestamp: messageData.timestamp?.toDate?.() || null, // Safely handle Firestore Timestamp
+        userPk: messageData.userPk || null,
+        content: messageData.content || null,
+        timestamp: messageData.timestamp?.toDate?.() || null,
       };
     });
 
@@ -263,7 +295,6 @@ app.get('/messages', async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
 
 // POST: Add a new message to a channel
 app.post('/messages', async (req, res) => {

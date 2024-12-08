@@ -64,23 +64,22 @@ export class MyRoomsService {
   }
 
   /**
-   * Fetch categories for a specific room by its roomID.
+   * Fetch categories and users for a specific room by its roomID.
    * @param roomID - Primary key of the room
-   * @returns Observable of Category[]
+   * @returns Observable<{ categories: Category[]; users: string[] }>
    */
-  public getRoomCategories(roomID: string): Observable<Category[]> {
+  public getRoomCategoriesWithUsers(roomID: string): Observable<{ categories: Category[]; users: string[] }> {
     if (!roomID) {
       console.error('Room ID is required to fetch categories.');
-      return of([]); // Return an empty array if no roomID is provided
+      return of({ categories: [], users: [] }); // Return empty arrays if no roomID is provided
     }
 
     return this.httpService
       .get(`${apiEnum.CATEGORIES}${roomID}`)
       .pipe(
-        map((response: { success: boolean; categories: any[] }) => {
+        map((response: { success: boolean; categories: any[]; users: string[] }) => {
           if (response.success) {
-            // Map the API response to match the Category interface
-            return response.categories.map((category) => ({
+            const categories = response.categories.map((category) => ({
               categoryID: category.pk, // Map 'pk' to 'categoryID'
               displayName: category.displayName,
               channels: category.channels.map((channel: any) => ({
@@ -89,13 +88,17 @@ export class MyRoomsService {
                 messages: [] // Initialize messages as an empty array
               })),
             }));
+
+            const users = response.users; // Extract users array
+            return { categories, users };
           }
-          return []; // Return an empty array if success is false
+          return { categories: [], users: [] }; // Return empty arrays if success is false
         }),
         catchError((error) => {
-          console.error('Error fetching room categories:', error);
-          return of([]); // Handle errors gracefully by returning an empty array
+          console.error('Error fetching room categories and users:', error);
+          return of({ categories: [], users: [] }); // Handle errors gracefully by returning empty arrays
         })
       );
   }
+
 }

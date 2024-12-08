@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MyRoomsService } from 'src/app/services/my-rooms.service';
 import { Category, Channel } from './chat-interface';
 import { ActivatedRoute } from '@angular/router';
-import { computeMsgId } from '@angular/compiler';
 
 @Component({
   selector: 'app-room-chat-overview',
@@ -12,10 +11,15 @@ import { computeMsgId } from '@angular/compiler';
 export class RoomChatOverviewComponent implements OnInit {
   public roomID: string = '';
   public roomCategories: Category[] = [];
-  public roomChannels: Channel[] = []
+  public directMessageCategory: Category = {
+    categoryID: 'directMessages',
+    displayName: 'Direct Messages',
+    channels: [],
+  };
+  public roomChannels: Channel[] = [];
   public showSideBar: boolean = true;
-  public selectedChannelID: string = "";
-  public selectedChannelName: string = "";
+  public selectedChannelID: string = '';
+  public selectedChannelName: string = '';
   public refreshChatArea: boolean = true;
 
   constructor(
@@ -25,14 +29,27 @@ export class RoomChatOverviewComponent implements OnInit {
 
   public ngOnInit(): void {
     this.extractIdFromRoute();
-    this.setRoomCategories(this.roomID);
+    this.setRoomCategoriesWithUsers(this.roomID);
   }
 
-  public setRoomCategories(roomID: string): void {
-    this.myRoomsService.getRoomCategories(roomID).subscribe((categories) => {
-      this.roomCategories = categories;
-      this.setDefaultChannel();
-    });
+  public setRoomCategoriesWithUsers(roomID: string): void {
+    this.myRoomsService.getRoomCategoriesWithUsers(roomID).subscribe(
+      ({ categories, users }) => {
+        // Ensure `categories` and `users` are valid arrays
+        this.roomCategories = categories || [];
+        const validUsers = users || [];
+
+        // Add direct message category
+        this.directMessageCategory = this.getDirectMessageCategory(validUsers);
+        this.roomCategories = [...this.roomCategories, this.directMessageCategory];
+
+        console.log(this.roomCategories);
+        this.setDefaultChannel();
+      },
+      (error) => {
+        console.error('Error fetching room categories or users:', error);
+      }
+    );
   }
 
   public toggleSidebar(): void {
@@ -65,4 +82,39 @@ export class RoomChatOverviewComponent implements OnInit {
     }
   }
 
+  public getDirectMessageCategory(users: string[]): Category {
+    const userPk: string | null = sessionStorage.getItem('accountEmail');
+
+    if (!userPk) {
+      console.error('No logged-in user found in session storage.');
+      return {
+        categoryID: 'directMessages',
+        displayName: 'Direct Messages',
+        channels: [],
+      };
+    }
+
+    // Create a channel for each user, skipping the current user
+    const channels = (users || [])
+      .filter((otherUserPk) => otherUserPk && otherUserPk !== userPk) // Skip the logged-in user
+      .map((otherUserPk) => {
+        // Determine the channel ID alphabetically
+        const [user1, user2] = [userPk, otherUserPk].sort();
+        const channelID = `${user1}&${user2}`;
+
+        // Return the channel object
+        return {
+          channelID,
+          channelName: otherUserPk, // Use the other user's PK as the channel name
+          messages: [], // Initialize with empty messages
+        };
+      });
+
+    // Return the Category
+    return {
+      categoryID: 'directMessages',
+      displayName: 'Direct Messages',
+      channels,
+    };
+  }
 }
