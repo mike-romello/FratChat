@@ -1,0 +1,4 @@
+node_modules/
+*.local
+env.json
+serviceAccountKey.json
