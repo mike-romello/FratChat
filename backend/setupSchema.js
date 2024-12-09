@@ -93,7 +93,15 @@ async function populateSampleData() {
     const categoryId2 = "announcementsCategory";
     const categoryId3 = "randomCategory";
     const userEmail = "user@example.com";
-    const me = "salcasalena@gmail.com";
+
+    // Add Users to Phi Psi Room
+    const users = [
+        "salcasalena@gmail.com",
+        "mjromello@gmail.com",
+        "cd59256@gmail.com",
+        'intrixer8@gmail.com'
+        // ADD NEW EMAILS HERE
+    ]
 
     const channelId1 = "generalChat";
     const channelId2 = "teamUpdates";
@@ -103,8 +111,7 @@ async function populateSampleData() {
 
     const messageId1 = "msg1";
 
-    await createUser(userEmail, "John Doe", "https://example.com/photo.jpg", [roomId]);
-    await createRoom(roomId, roomDisplayName, [userEmail, me], [categoryId1, categoryId2, categoryId3]);
+    await createRoom(roomId, roomDisplayName, users, [categoryId1, categoryId2, categoryId3]);
 
     await createCategory(categoryId1, "General", [channelId1, channelId2]);
     await createCategory(categoryId2, "Announcements", [channelId3]);
@@ -126,7 +133,10 @@ async function populateSampleData() {
     );
 
     await createPermission("permission1", "Admin Access");
-    await modifyUserToAddRoom(me, roomId);
+    
+    users.forEach(async (user) => {
+        await modifyUserToAddRoom(user, roomId);
+    })
 
     console.log("Sample data populated successfully.");
 }
