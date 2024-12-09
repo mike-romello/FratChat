@@ -17,7 +17,7 @@
     }
   ],
   "hosting": {
-    "public": "frontend/dist/frontend",
+    "public": "frontend/dist/fratchat",
     "ignore": [
       "firebase.json",
       "**/.*",

@@ -7,7 +7,7 @@ import { error } from 'node:console';
   providedIn: 'root'
 })
 export class HttpService {
-  private baseUrl: string = "http://localhost:3000";
+  private baseUrl: string = "https://us-central1-fratchat-f8eda.cloudfunctions.net/api";
 
   constructor(private http: HttpClient) { }
 
